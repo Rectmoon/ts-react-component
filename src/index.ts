@@ -1,1 +1,1 @@
-export { TestComponent } from "./Button";
+export { default as App } from "./App/App";

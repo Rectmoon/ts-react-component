@@ -2,12 +2,17 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from 'rollup-plugin-typescript2'
+import postcss from 'rollup-plugin-postcss'
+import copy from 'rollup-plugin-copy'
 import pkg from './package.json'
-
-// "url": "git+https://github.com/HarveyD/react-component-library.git"
 
 export default {
   input: 'src/index.ts',
+
+  output: [
+    { file: pkg.main, format: 'cjs' },
+    { file: pkg.module, format: 'esm' }
+  ],
 
   external: Object.keys(pkg.peerDependencies || {}),
 
@@ -20,11 +25,23 @@ export default {
 
     typescript({
       useTsconfigDeclarationDir: true
-    })
-  ],
+    }),
 
-  output: [
-    { file: pkg.main, format: 'cjs' },
-    { file: pkg.module, format: 'esm' }
+    postcss(),
+
+    copy({
+      targets: [
+        {
+          src: 'src/variables.scss',
+          dest: 'dist',
+          rename: 'variables.scss'
+        },
+        {
+          src: 'src/typography.scss',
+          dest: 'dist',
+          rename: 'typography.scss'
+        }
+      ]
+    })
   ]
 }

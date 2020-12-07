@@ -10,7 +10,7 @@ if (!componentArgument) {
 }
 
 const componentName =
-  componentArgument[0].toUppercase() + componentArgument.slice(1)
+  componentArgument[0].toUpperCase() + componentArgument.slice(1)
 
 console.log('Creating Component Templates with name: ' + componentName)
 
