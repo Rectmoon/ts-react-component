@@ -1,8 +1,8 @@
 require('colors')
 const fs = require('fs')
 const templates = require('./templates')
-
 const componentArgument = process.argv[2]
+const { components: componentsDirectory } = require('../package.json')
 
 if (!componentArgument) {
   console.error('Please supply a valid component name'.red)
@@ -14,7 +14,9 @@ const componentName =
 
 console.log('Creating Component Templates with name: ' + componentName)
 
-const componentDirectory = `./src/${componentName}`
+!fs.existsSync(componentsDirectory) && fs.mkdirSync(componentsDirectory)
+
+const componentDirectory = `${componentsDirectory}/${componentName}`
 
 if (fs.existsSync(componentDirectory)) {
   console.error(`Component ${componentName} already exists.`.red)
@@ -25,11 +27,11 @@ fs.mkdirSync(componentDirectory)
 
 templates.forEach(template => {
   const { content, extension } = template(componentName)
+  const filePath = extension.startsWith('.')
+    ? `${componentDirectory}/${componentName}${extension}`
+    : `${componentDirectory}/${extension}`
 
-  fs.writeFileSync(
-    `${componentDirectory}/${componentName}${extension}`,
-    content
-  )
+  fs.writeFileSync(filePath, content)
 })
 
 console.log('Successfully created component under: ' + componentDirectory.green)
