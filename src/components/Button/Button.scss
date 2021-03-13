@@ -1,8 +1,14 @@
 @import '../../variables.scss';
 @import '../../typography.scss';
 
-.#{$prefix-button} {
-  @include font-defaults;
+.#{$prefix} {
+  &-button {
+    @include font-defaults;
 
-  display: inline-block;
+    display: inline-block;
+    padding: 4px 6px;
+    border: 1px solid indigo;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 }
