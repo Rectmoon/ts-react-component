@@ -8,12 +8,7 @@ import { terser } from 'rollup-plugin-terser'
 import copy from 'rollup-plugin-copy'
 import pkg from './package.json'
 
-const {
-  main,
-  module,
-  components: sourceComponents,
-  peerDependencies = {}
-} = pkg
+const { main, components: sourceComponents, peerDependencies = {} } = pkg
 
 const commonPlugins = [
   peerDepsExternal(),
@@ -37,10 +32,7 @@ export default [
   {
     input: 'src/index.ts',
 
-    output: [
-      { file: main, format: 'cjs' },
-      { file: module, format: 'esm' }
-    ],
+    output: [{ file: main, format: 'esm' }],
 
     external: Object.keys(peerDependencies),
 
@@ -69,7 +61,7 @@ export default [
 
     output: [
       {
-        file: `${module.split('/')[0]}/components/${component}/index.js`,
+        file: `${main.split('/')[0]}/components/${component}/index.js`,
         format: 'esm',
         exports: 'default'
       }
@@ -90,9 +82,6 @@ export default [
         sourceMap: false,
         // This plugin will process files ending with these extensions and the extensions supported by custom loaders.
         extensions: ['.less', '.css']
-      }),
-      copy({
-        targets: [{ src: 'src/*.less', dest: module.split('/')[0] }]
       })
     ]
   }))

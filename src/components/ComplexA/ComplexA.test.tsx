@@ -2,11 +2,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import Tabs from "./Tabs";
-import { ITabsProps } from "./Tabs.types";
+import ComplexA from "./ComplexA";
+import { IComplexAProps } from "./ComplexA.types";
 
 describe("Test Component", () => {
-  let props: ITabsProps;
+  let props: IComplexAProps;
 
   beforeEach(() => {
     props = {
@@ -14,13 +14,13 @@ describe("Test Component", () => {
     };
   });
 
-  const renderComponent = () => render(<Tabs {...props} />);
+  const renderComponent = () => render(<ComplexA {...props} />);
 
   it("should render foo text correctly", () => {
     props.foo = "harvey was here";
     const { getByTestId } = renderComponent();
 
-    const component = getByTestId("Tabs");
+    const component = getByTestId("ComplexA");
 
     expect(component).toHaveTextContent("harvey was here");
   });
