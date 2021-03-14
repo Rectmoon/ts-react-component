@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import typescript from 'rollup-plugin-typescript2'
 import postcss from 'rollup-plugin-postcss'
 import { terser } from 'rollup-plugin-terser'
+import copy from 'rollup-plugin-copy'
 import pkg from './package.json'
 
 const {
@@ -14,14 +15,13 @@ const {
   peerDependencies = {}
 } = pkg
 
-const plugins = [
+const commonPlugins = [
   peerDepsExternal(),
   resolve(),
   commonjs(),
   typescript({
     useTsconfigDeclarationDir: true
   }),
-  postcss(),
   process.env.NODE_ENV === 'production' &&
     terser({
       compress: {
@@ -44,7 +44,24 @@ export default [
 
     external: Object.keys(peerDependencies),
 
-    plugins
+    plugins: [
+      ...commonPlugins,
+      postcss({
+        // Extract CSS to the same location where JS file is generated but with .css extension.
+        extract: 'index.css',
+        // Use named exports alongside default export.
+        namedExports: true,
+        // Minimize CSS, boolean or options for cssnano.
+        minimize: true,
+        // Enable sourceMap.
+        sourceMap: false,
+        // This plugin will process files ending with these extensions and the extensions supported by custom loaders.
+        extensions: ['.less', '.css']
+      }),
+      copy({
+        targets: [{ src: 'src/*.less', dest: main.split('/')[0] }]
+      })
+    ]
   },
 
   ...fs.readdirSync(sourceComponents).map(component => ({
@@ -52,13 +69,7 @@ export default [
 
     output: [
       {
-        file: `dist/components/${component}/index.js`,
-        format: 'cjs',
-        exports: 'default'
-      },
-
-      {
-        file: `dist/components/${component}/index.esm.js`,
+        file: `${module.split('/')[0]}/components/${component}/index.js`,
         format: 'esm',
         exports: 'default'
       }
@@ -66,6 +77,23 @@ export default [
 
     external: Object.keys(peerDependencies),
 
-    plugins
+    plugins: [
+      ...commonPlugins,
+      postcss({
+        // Extract CSS to the same location where JS file is generated but with .css extension.
+        extract: 'index.css',
+        // Use named exports alongside default export.
+        namedExports: true,
+        // Minimize CSS, boolean or options for cssnano.
+        minimize: true,
+        // Enable sourceMap.
+        sourceMap: false,
+        // This plugin will process files ending with these extensions and the extensions supported by custom loaders.
+        extensions: ['.less', '.css']
+      }),
+      copy({
+        targets: [{ src: 'src/*.less', dest: module.split('/')[0] }]
+      })
+    ]
   }))
 ]

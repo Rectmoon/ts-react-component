@@ -7,8 +7,8 @@ module.exports = {
 
   webpackFinal: async config => {
     config.module.rules.push({
-      test: /\.scss$/,
-      use: ['style-loader', 'css-loader', 'sass-loader'],
+      test: /\.less$/,
+      use: ['style-loader', 'css-loader', 'less-loader'],
       include: path.resolve(__dirname, '../')
     })
 

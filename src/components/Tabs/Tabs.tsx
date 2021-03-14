@@ -3,12 +3,13 @@ import React from "react";
 
 import { ITabsProps } from "./Tabs.types";
 
-import "./Tabs.scss";
+import "./Tabs.less";
+
+const prefix = "rainbow"
 
 const Tabs: React.FC<ITabsProps> = ({ foo }) => (
-  <div data-testid="Tabs" className="foo-bar">
+  <div data-testid="Tabs" className={prefix + "-Tabs"}>
     {foo}
-    Tabs
   </div>
 );
 

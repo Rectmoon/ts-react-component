@@ -3,12 +3,13 @@ import React from "react";
 
 import { IInputProps } from "./Input.types";
 
-import "./Input.scss";
+import "./Input.less";
+
+const prefix = "rainbow"
 
 const Input: React.FC<IInputProps> = ({ foo }) => (
-  <div data-testid="Input" className="foo-bar">
+  <div data-testid="Input" className={prefix + "-Input"}>
     {foo}
-    Input
   </div>
 );
 
